@@ -1,0 +1,174 @@
+def UserName(userName='as@f'):
+    lst = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    lst1 = "!@#$%^&*()-+?_=,<>/"
+    lst2 = "@."
+    lst3 = "."
+    while (True):
+        flag = True
+        if not any(ch in lst2 for ch in userName):
+            print("Username must contain one (@,.) symbol")
+            flag = False
+            userName=input("Create UserName:")
+
+        if not any(ch in lst3 for ch in userName):
+            print("Username must contain one (.) symbol")
+            flag=False
+            userName=input("Create UserName:")
+
+        if userName.count("@") > 1 or userName.count(".") > 1:
+             print("Enter the UserName Properly")
+             flag=False
+             userName = input("Create UserName:")
+
+        if userName[0] in lst:
+             print("UserName starts with character only")
+             flag=False
+             userName = input("Create UserName:")
+
+        if userName[0] in lst1:
+              print("UserName starts with character only")
+              flag=False
+              userName = input("Create UserName:")
+
+        if ((userName.index("@")) - (userName.index("."))) == -1:
+              print("Enter the UserName Properly")
+              flag=False
+              userName = input("Create UserName:")
+
+        if ((userName.index(".")) - (userName.index("@"))) == -1:
+              print("Enter the UserName Properly")
+              flag=False
+              userName = input("Create UserName:")
+
+        if flag:
+            print("Valid Username")
+            return userName
+        else:
+            continue
+
+
+
+def Password(password='zZ90'):
+    # password = input("Create Password:")
+    sp = ['!', '@', '#', '$', '%', '^', '&', '*']
+    dig = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    # flag=True
+
+    while (True):
+        flag = True
+        if len(password) < 5:
+            print("Length should be greater than 5")
+            flag = False
+            password = input("Create Password:")
+
+            # Registration()
+
+        if len(password) > 16:
+            print("Length should be less than 16")
+            flag = False
+            password = input("Create Password:")
+
+            # Registration()
+
+        if not any(ch in dig for ch in password):
+            print("Password must contain 1 numerical value")
+            flag = False
+            password = input("Create Password:")
+
+            # Registration()
+
+        if not any(ch.isupper() for ch in password):
+            print("Password must contain 1 uppercase character")
+            flag = False
+            password = input("Create Password:")
+
+            # Registration()
+
+        if not any(ch.islower() for ch in password):
+            print("Password must contain 1 lowercase character")
+            flag = False
+            password = input("Create Password:")
+
+            # Registration()
+
+        if not any(ch in sp for ch in password):
+            print("Password must contain 1 special character")
+            flag = False
+            password = input("Create Password:")
+
+        if flag:
+            print("Valid Password")
+            return password
+        else:
+            continue
+
+
+def Registration():
+    print("Registration")
+    userName = input("Create UserName:")
+    userName=UserName(userName)
+    password = input("Create Password:")
+    password = Password(password)
+    conformationPassword = input("Enter Conformation Password:")
+    if password == conformationPassword:
+        print("Password Created")
+        print("********************************************")
+        file = open("database.txt", "a")
+        file.write(userName + "," + password + "\n")
+        file.close()
+        Login()
+    else:
+        print("Password does not Match")
+        Registration()
+
+
+def ForgetPassword():
+    uName = input("Enter your registered Username:")
+    uName = uName.strip()
+    for u in open("database.txt", "r").readlines():
+        u = u.strip()
+        info = u.split(",")
+        if uName == info[0]:
+            val = info[1]
+            print(f"your password is:{val}")
+
+
+
+def Login():
+    username = input("Enter your username:")
+    password = input("Enter your password:")
+    username = username.strip()
+    password = password.strip()
+    for line in open("database.txt", "r").readlines():
+        line = line.strip()
+        login_info = line.split(",")  # Split on the space, and store the results in a list of two strings
+        if username == login_info[0] and password == login_info[1]:
+            print(f"Welcome back {username} ")
+            return True
+    else:
+        print("Username or Password is worng")
+        f = input("Forgot password F/N:")
+        if f == "F":
+            ForgetPassword()
+        else:
+            print("Create Your Account")
+            Registration()
+
+
+def entry():
+    print("Welcome Page")
+    print("***********************")
+    print("For Registration Enter -- 1")
+    print("For Login Enter -- 2")
+    userChoice = input("Enter Your Choice:")
+    if userChoice == "1":
+        Registration()
+    elif userChoice == "2":
+        Login()
+    else:
+        print("Please enter your choice")
+        Login()
+
+
+entry()
